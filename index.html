@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSH Quest 🍄</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#10152b;color:white;overflow-x:hidden}
+header{background:linear-gradient(90deg,#171d42,#263b78);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:5;border-bottom:3px solid #ffd84d}
+h1{margin:0;font-size:24px}.stats{display:flex;gap:12px;flex-wrap:wrap;font-weight:bold}.stat{background:#ffffff18;padding:8px 12px;border-radius:12px}
+#game{max-width:1100px;margin:auto;padding:20px}.world{display:none}.world.active{display:block}
+.hero{text-align:center;padding:18px}.hero h2{font-size:32px;margin:8px}.hero p{color:#cbd5ff}
+.map{position:relative;min-height:480px;border-radius:24px;padding:30px;overflow:hidden;background:linear-gradient(#67c8ff 0 48%,#8ee36b 48% 68%,#5b3b25 68%);border:4px solid #fff3a3}
+.cloud{position:absolute;font-size:55px;opacity:.8}.c1{left:8%;top:5%}.c2{right:10%;top:14%}.mount{position:absolute;bottom:31%;font-size:100px}.m1{left:4%}.m2{right:3%}
+.levels{position:relative;z-index:2;display:flex;justify-content:center;gap:70px;align-items:center;margin-top:80px;flex-wrap:wrap}
+.level{width:150px;height:150px;border-radius:50%;background:#ffe05c;color:#271900;border:7px solid #fff;display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:bold;font-size:18px;cursor:pointer;box-shadow:0 10px 0 #a56f00;transition:.2s}
+.level:hover{transform:translateY(-6px)}.level.locked{filter:grayscale(1);opacity:.55;cursor:not-allowed}.level.done{background:#7df39b}
+.castle{font-size:90px;display:block;margin:35px auto 0;text-align:center;cursor:pointer}
+.controls{text-align:center;margin-top:18px}.btn{border:0;border-radius:12px;padding:12px 18px;background:#ffd84d;font-weight:bold;cursor:pointer;margin:5px}.btn:hover{filter:brightness(1.1)}
+.card{max-width:720px;margin:20px auto;background:#1a2250;border:2px solid #5565aa;border-radius:20px;padding:24px;box-shadow:0 15px 40px #0005}
+.options button{display:block;width:100%;margin:10px 0;padding:14px;border:2px solid #6677c8;border-radius:12px;background:#242e63;color:white;text-align:left;cursor:pointer;font-size:16px}.options button:hover{background:#34438b}
+.message{text-align:center;min-height:28px;font-weight:bold}.success{color:#72f6a1}.error{color:#ff8b8b}
+#modal{display:none;position:fixed;inset:0;background:#000b;z-index:10;align-items:center;justify-content:center;padding:20px}.modalbox{max-width:650px;width:100%;background:#151c43;border:3px solid #ffd84d;border-radius:20px;padding:25px}
+.progress{height:14px;background:#080b1c;border-radius:20px;overflow:hidden}.bar{height:100%;background:#55e890;width:0;transition:.4s}
+footer{text-align:center;padding:25px;color:#aeb8df}
+@media(max-width:600px){.levels{gap:30px}.map{min-height:560px}.level{width:125px;height:125px}.stats{font-size:13px}.hero h2{font-size:25px}}
+</style>
+</head>
+<body>
+<header>
+<h1>🍄 SSH QUEST</h1>
+<div class="stats">
+<div class="stat">🪙 <span id="coins">0</span></div>
+<div class="stat">⭐ <span id="stars">0</span></div>
+<div class="stat">❤️ <span id="lives">3</span></div>
+<div class="stat">🏆 Nivel <span id="current">1</span>/4</div>
+</div>
+</header>
+
+<main id="game">
+<section class="hero">
+<h2>¡Aventura por los mundos de SSH!</h2>
+<p>Responde correctamente para desbloquear cada mundo. Consigue monedas, poderes y llega al castillo final.</p>
+<div class="progress"><div class="bar" id="bar"></div></div>
+</section>
+
+<section class="world active" id="world1">
+<div class="map">
+<span class="cloud c1">☁️</span><span class="cloud c2">☁️</span><span class="mount m1">⛰️</span><span class="mount m2">🏔️</span>
+<div class="levels">
+<div class="level" onclick="openLevel(1)">🍄<br>Nivel 1<br>SSH básico</div>
+<div class="level locked" id="node2">🔒<br>Nivel 2<br>Seguridad</div>
+<div class="level locked" id="node3">🔒<br>Nivel 3<br>Comandos</div>
+</div>
+<div class="castle" id="castle" onclick="openLevel(4)">🏰</div>
+</div>
+</section>
+
+<section class="world" id="win">
+<div class="card" style="text-align:center">
+<h2>🏰 ¡CASTILLO CONQUISTADO!</h2>
+<p>Has completado la aventura de SSH.</p>
+<h1>🎉 ¡Eres un maestro de SSH! 🎉</h1>
+<p>Monedas: <b id="finalCoins">0</b> · Estrellas: <b id="finalStars">0</b></p>
+<button class="btn" onclick="restart()">🔄 Jugar de nuevo</button>
+</div>
+</section>
+</main>
+
+<div id="modal">
+<div class="modalbox">
+<h2 id="qtitle">Pregunta</h2>
+<p id="question"></p>
+<div class="options" id="options"></div>
+<div class="message" id="message"></div>
+<div style="text-align:center"><button class="btn" onclick="closeModal()">Salir</button></div>
+</div>
+</div>
+<footer>🔐 SSH Quest · Juego educativo HTML · ¡Aprende jugando!</footer>
+
+<script>
+const questions={
+1:{title:"🍄 Mundo 1 — La puerta SSH",questions:[
+ {q:"¿Qué significa SSH?",a:["Secure Shell","Simple Server Host","System Shell Handler","Secure Sharing Hub"],correct:0},
+ {q:"¿Para qué se utiliza principalmente SSH?",a:["Acceso remoto seguro","Crear páginas web","Compartir impresoras","Editar imágenes"],correct:0},
+ {q:"¿Qué protocolo reemplaza normalmente SSH cuando se busca una conexión remota segura?",a:["Telnet","HTTP","FTP","DNS"],correct:0}
+]},
+2:{title:"🛡️ Mundo 2 — Fortaleza de seguridad",questions:[
+ {q:"¿Cuál es el puerto predeterminado de SSH?",a:["21","22","23","80"],correct:1},
+ {q:"¿Qué protege principalmente SSH?",a:["La comunicación mediante cifrado","El tamaño del monitor","La velocidad del teclado","Los cables de red"],correct:0},
+ {q:"¿Qué se necesita normalmente para autenticarse en un servidor SSH?",a:["Credenciales o una clave","Solo una dirección web","Un cable HDMI","Un navegador"],correct:0}
+]},
+3:{title:"⭐ Mundo 3 — Montaña de comandos",questions:[
+ {q:"¿Qué comando se usa normalmente para conectarse por SSH?",a:["ssh usuario@IP","ftp usuario@IP","ping ssh@IP","http usuario@IP"],correct:0},
+ {q:"¿Qué comando muestra normalmente la dirección IP en Linux?",a:["ip addr","ssh ip","show web","net ssh"],correct:0},
+ {q:"¿Qué comando permite salir de una sesión SSH?",a:["exit","closeSSH","quitnet","stop"],correct:0}
+]},
+4:{title:"🏰 Castillo final — Maestro SSH",questions:[
+ {q:"¿Qué ventaja principal ofrece SSH frente a Telnet?",a:["Usa una conexión cifrada","Es más lento","No necesita autenticación","Solo funciona en Windows"],correct:0},
+ {q:"¿Cuál de estas opciones es una buena práctica de seguridad para SSH?",a:["Usar claves SSH y contraseñas fuertes","Compartir la contraseña","Desactivar toda autenticación","Usar siempre Telnet"],correct:0},
+ {q:"¿Qué puerto se puede usar para SSH si el administrador cambia el puerto predeterminado?",a:["Cualquier puerto configurado y permitido","Solo el puerto 80","Solo el puerto 21","Nunca se puede cambiar"],correct:0}
+]};
+let level=1,coins=0,stars=0,lives=3,completed=new Set();
+
+function update(){
+document.getElementById("coins").textContent=coins;
+document.getElementById("stars").textContent=stars;
+document.getElementById("lives").textContent=lives;
+document.getElementById("current").textContent=Math.min(level,4);
+document.getElementById("bar").style.width=(completed.size/4*100)+"%";
+if(completed.has(1)) document.getElementById("node2").className="level done",document.getElementById("node2").innerHTML="🛡️<br>Nivel 2<br>Seguridad",document.getElementById("node2").onclick=()=>openLevel(2);
+if(completed.has(2)) document.getElementById("node3").className="level done",document.getElementById("node3").innerHTML="⭐<br>Nivel 3<br>Comandos",document.getElementById("node3").onclick=()=>openLevel(3);
+if(completed.has(3)) document.getElementById("castle").style.opacity="1";
+}
+
+let questionIndex=0;
+
+function openLevel(n){
+if(n>1 && !completed.has(n-1)){alert("🔒 Primero completa el nivel anterior.");return}
+if(n===4 && !completed.has(3)){alert("🔒 El castillo está protegido. Completa el Nivel 3.");return}
+questionIndex=0;
+showQuestion(n);
+}
+
+function showQuestion(n){
+const x=questions[n], q=x.questions[questionIndex];
+document.getElementById("qtitle").textContent=x.title+" · Pregunta "+(questionIndex+1)+"/3";
+document.getElementById("question").textContent=q.q;
+const box=document.getElementById("options");box.innerHTML="";
+document.getElementById("message").textContent="";
+q.a.forEach((ans,i)=>{
+let b=document.createElement("button");
+b.textContent=(i+1)+". "+ans;
+b.onclick=()=>answer(n,i);
+box.appendChild(b);
+});
+document.getElementById("modal").style.display="flex";
+}
+
+function answer(n,i){
+const x=questions[n], q=x.questions[questionIndex], m=document.getElementById("message");
+if(i===q.correct){
+m.innerHTML="🎉 ¡Correcto!";
+m.className="message success";
+setTimeout(()=>{
+questionIndex++;
+if(questionIndex<3){
+showQuestion(n);
+}else{
+completed.add(n);
+coins+=20*n;
+stars++;
+level=Math.max(level,n+1);
+update();
+m.innerHTML="🏆 ¡Nivel completado! +"+(20*n)+" 🪙 y +1 ⭐";
+m.className="message success";
+setTimeout(()=>{closeModal();if(n===4)showWin()},900);
+}
+},650);
+}else{
+lives--;
+update();
+m.innerHTML="❌ Incorrecto. Pierdes una ❤️";
+m.className="message error";
+if(lives<=0)setTimeout(()=>{alert("💥 Te quedaste sin vidas. ¡Inténtalo de nuevo!");restart()},700);
+}
+}
+function closeModal(){document.getElementById("modal").style.display="none"}
+function showWin(){
+document.getElementById("game").innerHTML=`<section class="world active"><div class="card" style="text-align:center">
+<h2>🏰 ¡CASTILLO CONQUISTADO!</h2><p>Completaste los 4 niveles de SSH.</p>
+<div style="font-size:70px">🍄 🪙 ⭐ 🏰</div>
+<h1>🎉 ¡MAESTRO DE SSH! 🎉</h1>
+<p>🪙 Monedas: <b>${coins}</b> · ⭐ Estrellas: <b>${stars}</b> · ❤️ Vidas restantes: <b>${lives}</b></p>
+<button class="btn" onclick="location.reload()">🔄 Jugar de nuevo</button>
+</div></section>`;
+}
+function restart(){location.reload()}
+update();
+</script>
+</body>
+</html>
