@@ -40,6 +40,7 @@
             },
             "visible": true,
             "shape": "actor",
+            "zIndex": 1,
             "ports": {
               "groups": {
                 "top": {
@@ -123,7 +124,6 @@
               ]
             },
             "id": "c27958d2-b0fb-40d8-a5bd-6e1a0451940b",
-            "zIndex": 1,
             "data": {
               "type": "tm.Actor",
               "name": "Usuario/Cliente",
@@ -157,6 +157,7 @@
             },
             "visible": true,
             "shape": "actor",
+            "zIndex": 2,
             "ports": {
               "groups": {
                 "top": {
@@ -240,7 +241,6 @@
               ]
             },
             "id": "e5e742e7-2159-4efc-8e90-b4840aa446b9",
-            "zIndex": 2,
             "data": {
               "type": "tm.Actor",
               "name": "Administrador\n",
@@ -274,6 +274,7 @@
             },
             "visible": true,
             "shape": "process",
+            "zIndex": 3,
             "ports": {
               "groups": {
                 "top": {
@@ -357,7 +358,6 @@
               ]
             },
             "id": "dfdb69b5-1f25-469e-ac17-05d5a94af7f0",
-            "zIndex": 3,
             "data": {
               "type": "tm.Process",
               "name": "Proceso de Autenticación",
@@ -397,6 +397,7 @@
             },
             "visible": true,
             "shape": "store",
+            "zIndex": 4,
             "ports": {
               "groups": {
                 "top": {
@@ -480,7 +481,6 @@
               ]
             },
             "id": "3a14a9e8-3c85-40d1-bdfc-b2a65dd66a74",
-            "zIndex": 4,
             "data": {
               "type": "tm.Store",
               "name": "Base de Datos de Credenciales",
@@ -521,6 +521,7 @@
             },
             "visible": true,
             "shape": "store",
+            "zIndex": 5,
             "ports": {
               "groups": {
                 "top": {
@@ -604,7 +605,6 @@
               ]
             },
             "id": "3ae8138d-3c86-406c-9f86-53001c8ae8b0",
-            "zIndex": 5,
             "data": {
               "type": "tm.Store",
               "name": "Servidor de Logs y Auditoría",
