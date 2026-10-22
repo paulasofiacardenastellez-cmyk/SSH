@@ -723,6 +723,62 @@
             "shape": "flow",
             "attrs": {
               "line": {
+                "stroke": "#333333",
+                "targetMarker": {
+                  "name": "block"
+                },
+                "sourceMarker": {
+                  "name": ""
+                },
+                "strokeDasharray": null
+              }
+            },
+            "width": 200,
+            "height": 100,
+            "zIndex": 10,
+            "connector": "smooth",
+            "data": {
+              "type": "tm.Flow",
+              "name": "Credenciales Admin / Acceso RBAC",
+              "description": "",
+              "outOfScope": false,
+              "isTrustBoundary": false,
+              "reasonOutOfScope": "",
+              "hasOpenThreats": false,
+              "isBidirectional": false,
+              "isEncrypted": false,
+              "isPublicNetwork": false,
+              "protocol": "",
+              "threats": [],
+              "trustBoundaryIds": []
+            },
+            "labels": [
+              "Credenciales Admin / Acceso RBAC"
+            ],
+            "id": "ff13708f-7fd9-44fb-931c-ab15852f55ed",
+            "source": {
+              "x": 550,
+              "y": -250
+            },
+            "target": {
+              "cell": "dfdb69b5-1f25-469e-ac17-05d5a94af7f0",
+              "port": "c37dc833-3bcb-4a87-b3ac-71a7eb6622f4"
+            },
+            "vertices": [
+              {
+                "x": 510,
+                "y": -200
+              },
+              {
+                "x": 510,
+                "y": -170
+              }
+            ]
+          },
+          {
+            "shape": "flow",
+            "attrs": {
+              "line": {
                 "stroke": "red",
                 "strokeWidth": 2.5,
                 "targetMarker": {
@@ -900,63 +956,8 @@
             "target": {
               "cell": "3ae8138d-3c86-406c-9f86-53001c8ae8b0",
               "port": "026c09b3-b0e4-4108-922e-6f1be68dda9b"
-            }
-          },
-          {
-            "shape": "flow",
-            "attrs": {
-              "line": {
-                "stroke": "#333333",
-                "targetMarker": {
-                  "name": "block"
-                },
-                "sourceMarker": {
-                  "name": ""
-                },
-                "strokeDasharray": null
-              }
             },
-            "width": 200,
-            "height": 100,
-            "zIndex": 10,
-            "connector": "smooth",
-            "data": {
-              "type": "tm.Flow",
-              "name": "Credenciales Admin / Acceso RBAC",
-              "description": "",
-              "outOfScope": false,
-              "isTrustBoundary": false,
-              "reasonOutOfScope": "",
-              "hasOpenThreats": false,
-              "isBidirectional": false,
-              "isEncrypted": false,
-              "isPublicNetwork": false,
-              "protocol": "",
-              "threats": [],
-              "trustBoundaryIds": []
-            },
-            "labels": [
-              "Credenciales Admin / Acceso RBAC"
-            ],
-            "id": "ff13708f-7fd9-44fb-931c-ab15852f55ed",
-            "source": {
-              "x": 550,
-              "y": -250
-            },
-            "target": {
-              "cell": "dfdb69b5-1f25-469e-ac17-05d5a94af7f0",
-              "port": "c37dc833-3bcb-4a87-b3ac-71a7eb6622f4"
-            },
-            "vertices": [
-              {
-                "x": 510,
-                "y": -200
-              },
-              {
-                "x": 510,
-                "y": -170
-              }
-            ]
+            "vertices": []
           }
         ],
         "description": "seguridad"
